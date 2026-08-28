@@ -180,8 +180,13 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
     padding-bottom: 40px;
     text-align: left;
   }
+  .cta-row {
+    gap: 10px;
+  }
   .cta-row .btn {
-    flex: 1;
+    flex: none;
+    padding: 11px 18px;
+    font-size: 12.5px;
   }
 }
 </style>

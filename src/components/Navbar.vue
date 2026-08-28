@@ -54,24 +54,26 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
       </div>
     </div>
 
-    <Transition name="fade">
-      <div v-if="mobileOpen" class="mobile-overlay" @click.self="closeMobile">
-        <Transition name="slide-in">
-          <div v-if="mobileOpen" class="mobile-panel">
-            <div class="mobile-head">
-              <span class="logo">
-                <img src="/logo.png" alt="Logo Dapur Nenek Rajib" class="logo-img" />
-                {{ business.name }}
-              </span>
-              <button aria-label="Tutup menu" @click="closeMobile"><X :size="22" /></button>
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="mobileOpen" class="mobile-overlay" @click.self="closeMobile">
+          <Transition name="slide-in">
+            <div v-if="mobileOpen" class="mobile-panel">
+              <div class="mobile-head">
+                <span class="logo">
+                  <img src="/logo.png" alt="Logo Dapur Nenek Rajib" class="logo-img" />
+                  {{ business.name }}
+                </span>
+                <button aria-label="Tutup menu" @click="closeMobile"><X :size="22" /></button>
+              </div>
+              <nav class="mobile-links">
+                <a v-for="l in links" :key="l.href" :href="l.href" @click="closeMobile">{{ l.label }}</a>
+              </nav>
             </div>
-            <nav class="mobile-links">
-              <a v-for="l in links" :key="l.href" :href="l.href" @click="closeMobile">{{ l.label }}</a>
-            </nav>
-          </div>
-        </Transition>
-      </div>
-    </Transition>
+          </Transition>
+        </div>
+      </Transition>
+    </Teleport>
   </header>
 </template>
 
@@ -143,8 +145,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 .cart-btn,
 .hamburger {
   position: relative;
-  background: var(--glass);
-  border: 1px solid var(--border);
+  background: rgba(11, 9, 8, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 239, 230, 0.18);
   color: var(--text);
   width: 42px;
   height: 42px;

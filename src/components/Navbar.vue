@@ -1,40 +1,43 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { Menu, X, ShoppingBag } from 'lucide-vue-next'
-import { business } from '../data/business.js'
-import { useCart } from '../composables/useCart.js'
+import { ref, onMounted, onUnmounted } from 'vue';
+import { Menu, X, ShoppingBag } from 'lucide-vue-next';
+import { business } from '../data/business.js';
+import { useCart } from '../composables/useCart.js';
 
-const props = defineProps({ modelOpenCart: Boolean })
-const emit = defineEmits(['open-cart'])
+const props = defineProps({ modelOpenCart: Boolean });
+const emit = defineEmits(['open-cart']);
 
-const scrolled = ref(false)
-const mobileOpen = ref(false)
-const { itemCount } = useCart()
+const scrolled = ref(false);
+const mobileOpen = ref(false);
+const { itemCount } = useCart();
 
 const links = [
   { label: 'Beranda', href: '#hero' },
   { label: 'Menu', href: '#menu' },
   { label: 'Tentang', href: '#tentang' },
   { label: 'Cara Order', href: '#cara-order' },
-  { label: 'Kontak', href: '#kontak' }
-]
+  { label: 'Kontak', href: '#kontak' },
+];
 
 function handleScroll() {
-  scrolled.value = window.scrollY > 24
+  scrolled.value = window.scrollY > 24;
 }
 
 function closeMobile() {
-  mobileOpen.value = false
+  mobileOpen.value = false;
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }));
+onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 </script>
 
 <template>
   <header class="navbar" :class="{ scrolled }">
     <div class="container bar">
-      <a href="#hero" class="logo">{{ business.name }}</a>
+      <a href="#hero" class="logo">
+        <img src="/logo.png" alt="Logo Dapur Nenek Rajib" class="logo-img" />
+        {{ business.name }}
+      </a>
 
       <nav class="links">
         <a v-for="l in links" :key="l.href" :href="l.href">{{ l.label }}</a>
@@ -56,7 +59,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <Transition name="slide-in">
           <div v-if="mobileOpen" class="mobile-panel">
             <div class="mobile-head">
-              <span class="logo">{{ business.name }}</span>
+              <span class="logo">
+                <img src="/logo.png" alt="Logo Dapur Nenek Rajib" class="logo-img" />
+                {{ business.name }}
+              </span>
               <button aria-label="Tutup menu" @click="closeMobile"><X :size="22" /></button>
             </div>
             <nav class="mobile-links">
@@ -72,12 +78,19 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 <style scoped>
 .navbar {
   position: fixed;
-  top: 0; left: 0; width: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 50;
   height: var(--nav-h);
-  display: flex; align-items: center;
+  display: flex;
+  align-items: center;
   background: transparent;
-  transition: background 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  transition:
+    background 0.35s ease,
+    backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
   border-bottom: 1px solid transparent;
 }
 .navbar.scrolled {
@@ -85,52 +98,144 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
-.bar { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-.logo { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: -0.01em; }
-.links { display: flex; gap: 30px; }
-.links a { font-size: 13.5px; color: var(--text-muted); transition: color 0.2s ease; }
-.links a:hover { color: var(--text); }
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+.logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.links {
+  display: flex;
+  gap: 30px;
+}
+.links a {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.links a:hover {
+  color: var(--text);
+}
 
-.actions { display: flex; align-items: center; gap: 10px; }
-.cart-btn, .hamburger {
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cart-btn,
+.hamburger {
   position: relative;
   background: var(--glass);
   border: 1px solid var(--border);
   color: var(--text);
-  width: 42px; height: 42px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cart-btn .badge {
-  position: absolute; top: -4px; right: -4px;
-  background: var(--accent-2); color: #1a1208;
-  font-size: 10px; font-weight: 700; font-family: var(--font-mono);
-  min-width: 17px; height: 17px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent-2);
+  color: #1a1208;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 3px;
 }
-.hamburger { display: none; }
+.hamburger {
+  display: none;
+}
 
 .mobile-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 70;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 70;
 }
 .mobile-panel {
-  position: absolute; top: 0; right: 0; height: 100%; width: min(78vw, 320px);
-  background: var(--bg-elevated); padding: 20px; display: flex; flex-direction: column; gap: 30px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(78vw, 320px);
+  background: var(--bg-elevated);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
-.mobile-head { display: flex; align-items: center; justify-content: space-between; }
-.mobile-head button { background: transparent; border: none; color: var(--text); }
-.mobile-links { display: flex; flex-direction: column; gap: 6px; }
-.mobile-links a { padding: 14px 6px; font-size: 16px; border-bottom: 1px solid var(--border); }
+.mobile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mobile-head button {
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
+.mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mobile-links a {
+  padding: 14px 6px;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border);
+}
 
-.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-.slide-in-enter-active, .slide-in-leave-active { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
-.slide-in-enter-from, .slide-in-leave-to { transform: translateX(100%); }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide-in-enter-from,
+.slide-in-leave-to {
+  transform: translateX(100%);
+}
 
 @media (max-width: 860px) {
-  .links { display: none; }
-  .hamburger { display: flex; }
+  .links {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
 }
 </style>
